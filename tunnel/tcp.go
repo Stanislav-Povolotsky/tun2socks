@@ -10,6 +10,7 @@ import (
 
 	"github.com/xjasonlyu/tun2socks/v2/buffer"
 	"github.com/xjasonlyu/tun2socks/v2/core/adapter"
+	"github.com/xjasonlyu/tun2socks/v2/dialer"
 	"github.com/xjasonlyu/tun2socks/v2/dns"
 	"github.com/xjasonlyu/tun2socks/v2/log"
 	M "github.com/xjasonlyu/tun2socks/v2/metadata"
@@ -30,6 +31,11 @@ func (t *Tunnel) handleTCPConn(originConn adapter.TCPConn) {
 
 	if dns.IsFakeDNSQuery(metadata.DestinationAddrPort()) {
 		t.handleFakeDNSTCP(originConn)
+		return
+	}
+
+	if dns.IsHijackQuery(metadata.DstPort) {
+		t.handleDNSHijackTCP(originConn, metadata)
 		return
 	}
 
@@ -84,6 +90,29 @@ func (t *Tunnel) handleFakeDNSTCP(originConn adapter.TCPConn) {
 			return
 		}
 	}
+}
+
+// handleDNSHijackTCP redirects a DNS-over-TCP connection to the configured
+// hijack target, bypassing the proxy entirely, and reuses the same pipe()
+// relay as ordinary TCP flows.
+func (t *Tunnel) handleDNSHijackTCP(originConn adapter.TCPConn, metadata *M.Metadata) {
+	addr := dns.HijackTarget()
+	if addr == "" {
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), tcpConnectTimeout)
+	defer cancel()
+
+	upstream, err := dialer.DialContext(ctx, "tcp", addr)
+	if err != nil {
+		log.Warnf("[DNS] hijack dial %s: %v", addr, err)
+		return
+	}
+	defer upstream.Close()
+
+	log.Infof("[DNS] hijack TCP %s -> %s", metadata.SourceAddress(), addr)
+	pipe(originConn, upstream)
 }
 
 // pipe copies data to & from provided net.Conn(s) bidirectionally.
