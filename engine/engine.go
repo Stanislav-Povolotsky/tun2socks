@@ -100,6 +100,7 @@ func stop() (err error) {
 		_defaultStack.Wait()
 	}
 	dns.DisableFakeDNS()
+	dns.DisableHijack()
 	_engineMu.Unlock()
 	return nil
 }
@@ -215,6 +216,17 @@ func newFakeDNSPool(k *Key, proxyScheme string) (*fakeip.Pool, error) {
 	})
 }
 
+// validateDNSHijack checks the DNS hijack config is well-formed. Like
+// newFakeDNSPool, it has no side effects, so a bad config can be rejected
+// before the netstack is brought up.
+func validateDNSHijack(k *Key) error {
+	if k.DNSAddr == "" {
+		return nil
+	}
+	_, _, err := net.SplitHostPort(k.DNSAddr)
+	return err
+}
+
 func netstack(k *Key) (err error) {
 	if k.Proxy == "" {
 		return errors.New("empty proxy")
@@ -255,6 +267,9 @@ func netstack(k *Key) (err error) {
 	// must not leave a half-started stack behind.
 	fakeDNSPool, err := newFakeDNSPool(k, proxyScheme)
 	if err != nil {
+		return err
+	}
+	if err = validateDNSHijack(k); err != nil {
 		return err
 	}
 
@@ -299,6 +314,11 @@ func netstack(k *Key) (err error) {
 		dns.ReCreateServer(k.FakeDNSListenAddress, fakeDNSPool)
 		dns.EnableFakeDNS()
 		log.Infof("[DNS] fake DNS enabled")
+	}
+
+	if k.DNSAddr != "" {
+		dns.EnableHijack(k.DNSAddr)
+		log.Infof("[DNS] hijack enabled, redirecting to %s", k.DNSAddr)
 	}
 
 	return nil

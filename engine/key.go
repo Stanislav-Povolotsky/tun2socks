@@ -20,4 +20,5 @@ type Key struct {
 	FakeDNS                  bool          `yaml:"fakedns"`
 	FakeDNSNetIPv4           string        `yaml:"fakedns-net-ipv4"`
 	FakeDNSListenAddress     string        `yaml:"fakedns-listen-addr"`
+	DNSAddr                  string        `yaml:"dns-addr"`
 }

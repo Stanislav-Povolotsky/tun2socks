@@ -8,6 +8,7 @@ import (
 
 	"github.com/xjasonlyu/tun2socks/v2/buffer"
 	"github.com/xjasonlyu/tun2socks/v2/core/adapter"
+	"github.com/xjasonlyu/tun2socks/v2/dialer"
 	"github.com/xjasonlyu/tun2socks/v2/dns"
 	"github.com/xjasonlyu/tun2socks/v2/log"
 	M "github.com/xjasonlyu/tun2socks/v2/metadata"
@@ -29,6 +30,11 @@ func (t *Tunnel) handleUDPConn(uc adapter.UDPConn) {
 
 	if dns.IsFakeDNSQuery(metadata.DestinationAddrPort()) {
 		t.handleFakeDNSUDP(uc)
+		return
+	}
+
+	if dns.IsHijackQuery(metadata.DstPort) {
+		t.handleDNSHijackUDP(uc, metadata)
 		return
 	}
 
@@ -82,6 +88,34 @@ func (t *Tunnel) handleFakeDNSUDP(uc adapter.UDPConn) {
 			return
 		}
 	}
+}
+
+// handleDNSHijackUDP redirects a UDP DNS session to the configured hijack
+// target, bypassing the proxy entirely. It reuses the same pipePacket relay
+// as ordinary UDP flows, so one local socket serves the whole session
+// (including multiple queries, subject to the usual UDP idle timeout)
+// instead of opening a new one per query.
+func (t *Tunnel) handleDNSHijackUDP(uc adapter.UDPConn, metadata *M.Metadata) {
+	addr := dns.HijackTarget()
+	if addr == "" {
+		return
+	}
+
+	upstreamAddr, err := net.ResolveUDPAddr("udp", addr)
+	if err != nil {
+		log.Warnf("[DNS] hijack resolve %s: %v", addr, err)
+		return
+	}
+
+	pc, err := dialer.ListenPacket("udp", "")
+	if err != nil {
+		log.Warnf("[DNS] hijack listen: %v", err)
+		return
+	}
+	defer pc.Close()
+
+	log.Infof("[DNS] hijack UDP %s -> %s", metadata.SourceAddress(), addr)
+	pipePacket(uc, pc, upstreamAddr, t.udpTimeout.Load())
 }
 
 func pipePacket(origin, remote net.PacketConn, to net.Addr, timeout time.Duration) {

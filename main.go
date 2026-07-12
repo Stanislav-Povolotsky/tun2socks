@@ -42,6 +42,7 @@ func init() {
 	flag.BoolVar(&key.FakeDNS, "fakedns", false, "Enable fake DNS (HTTP, Shadowsocks, SOCKS)")
 	flag.StringVar(&key.FakeDNSNetIPv4, "fakedns-net-ipv4", "198.18.0.0/15", "IPv4 network for fake DNS A records")
 	flag.StringVar(&key.FakeDNSListenAddress, "fakedns-listen-addr", "127.0.0.1:53", "IP:port to listen on for DNS requests")
+	flag.StringVar(&key.DNSAddr, "dns-addr", "", "Redirect all DNS traffic (any destination, port 53) to this server, e.g. 8.8.8.8:53")
 	flag.Parse()
 }
 
