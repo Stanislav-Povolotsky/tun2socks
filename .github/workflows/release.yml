@@ -1,5 +1,8 @@
 name: Publish Go Releases
 
+permissions:
+  contents: write
+
 concurrency:
   group: release-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
@@ -64,7 +67,9 @@ jobs:
       - name: Build Android AAR
         if: startsWith(github.ref, 'refs/tags/')
         run: |
-          gomobile bind -o build/tun2socks-android.aar -target=android -androidapi 23 ./engine
+          gomobile bind -o build/tun2socks-android.aar -target=android -androidapi 23 \
+            -ldflags="-s -w" -trimpath \
+            ./engine
 
       - name: Upload Releases
         uses: softprops/action-gh-release@v2
