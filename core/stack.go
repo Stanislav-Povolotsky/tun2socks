@@ -35,6 +35,10 @@ type Config struct {
 	// Options are supplement options to apply settings
 	// for the internal stack.
 	Options []option.Option
+
+	// TCPSocketOptions are TCP socket-level options applied to each
+	// TCP endpoint as it is accepted.
+	TCPSocketOptions []option.TCPSocketOption
 }
 
 // CreateStack creates *stack.Stack with given config.
@@ -65,7 +69,7 @@ func CreateStack(cfg *Config) (*stack.Stack, error) {
 		// before creating NIC, otherwise NIC would dispatch packets
 		// to stack and cause race condition.
 		// Initiate transport protocol (TCP/UDP) with given handler.
-		withTCPHandler(cfg.TransportHandler),
+		withTCPHandler(cfg.TransportHandler, cfg.TCPSocketOptions),
 		withUDPHandler(cfg.TransportHandler),
 
 		// gVisor added NetworkPacketInfo.LocalAddressTemporary to
