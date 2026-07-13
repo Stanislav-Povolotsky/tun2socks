@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/xjasonlyu/tun2socks/v2/common/cache"
-	"github.com/xjasonlyu/tun2socks/v2/component/trie"
+	"github.com/Stanislav-Povolotsky/tun2socks/v2/common/cache"
+	"github.com/Stanislav-Povolotsky/tun2socks/v2/component/trie"
 )
 
 func createPools(options Options) ([]*Pool, error) {

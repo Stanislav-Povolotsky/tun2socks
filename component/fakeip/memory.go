@@ -3,7 +3,7 @@ package fakeip
 import (
 	"net"
 
-	"github.com/xjasonlyu/tun2socks/v2/common/cache"
+	"github.com/Stanislav-Povolotsky/tun2socks/v2/common/cache"
 )
 
 type memoryStore struct {

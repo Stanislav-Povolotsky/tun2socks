@@ -8,8 +8,8 @@ import (
 	D "github.com/miekg/dns"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/xjasonlyu/tun2socks/v2/component/fakeip"
-	"github.com/xjasonlyu/tun2socks/v2/component/trie"
+	"github.com/Stanislav-Povolotsky/tun2socks/v2/component/fakeip"
+	"github.com/Stanislav-Povolotsky/tun2socks/v2/component/trie"
 )
 
 func newTestPool(t *testing.T) *fakeip.Pool {

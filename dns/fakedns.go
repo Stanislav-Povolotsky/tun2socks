@@ -9,8 +9,8 @@ import (
 
 	D "github.com/miekg/dns"
 
-	"github.com/xjasonlyu/tun2socks/v2/component/fakeip"
-	M "github.com/xjasonlyu/tun2socks/v2/metadata"
+	"github.com/Stanislav-Povolotsky/tun2socks/v2/component/fakeip"
+	M "github.com/Stanislav-Povolotsky/tun2socks/v2/metadata"
 )
 
 var (

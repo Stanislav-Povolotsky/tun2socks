@@ -40,6 +40,32 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         run: make -j releases
 
+      - name: Set up JDK
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up Android NDK
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          echo "y" | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager \
+            "ndk;27.2.12479018"
+          echo "ANDROID_NDK_HOME=${ANDROID_HOME}/ndk/27.2.12479018" >> "$GITHUB_ENV"
+
+      - name: Install gomobile
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          go install golang.org/x/mobile/cmd/gomobile@latest
+          go install golang.org/x/mobile/cmd/gobind@latest
+          gomobile init
+
+      - name: Build Android AAR
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          gomobile bind -o build/tun2socks-android.aar -target=android -androidapi 23 ./engine
+
       - name: Upload Releases
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
