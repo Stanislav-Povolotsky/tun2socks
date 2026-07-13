@@ -4,7 +4,7 @@ import (
 	"errors"
 	"math/bits"
 
-	"github.com/xjasonlyu/tun2socks/v2/internal/pool"
+	"github.com/Stanislav-Povolotsky/tun2socks/v2/internal/pool"
 )
 
 // Allocator for incoming frames, optimized to prevent overwriting

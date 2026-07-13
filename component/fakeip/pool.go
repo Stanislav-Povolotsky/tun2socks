@@ -6,8 +6,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/xjasonlyu/tun2socks/v2/common/cache"
-	"github.com/xjasonlyu/tun2socks/v2/component/trie"
+	"github.com/Stanislav-Povolotsky/tun2socks/v2/common/cache"
+	"github.com/Stanislav-Povolotsky/tun2socks/v2/component/trie"
 )
 
 type store interface {

@@ -1,12 +1,12 @@
 ![tun2socks](docs/logo.png)
 
-[![GitHub Workflow][1]](https://github.com/xjasonlyu/tun2socks/actions)
-[![Go Version][2]](https://github.com/xjasonlyu/tun2socks/blob/main/go.mod)
-[![Go Report][3]](https://goreportcard.com/badge/github.com/xjasonlyu/tun2socks)
-[![Maintainability][4]](https://qlty.sh/gh/xjasonlyu/projects/tun2socks)
-[![GitHub License][5]](https://github.com/xjasonlyu/tun2socks/blob/main/LICENSE)
-[![Docker Pulls][6]](https://hub.docker.com/r/xjasonlyu/tun2socks)
-[![Releases][7]](https://github.com/xjasonlyu/tun2socks/releases)
+[![GitHub Workflow][1]](https://github.com/Stanislav-Povolotsky/tun2socks/actions)
+[![Go Version][2]](https://github.com/Stanislav-Povolotsky/tun2socks/blob/main/go.mod)
+[![Go Report][3]](https://goreportcard.com/badge/github.com/Stanislav-Povolotsky/tun2socks)
+[![Maintainability][4]](https://qlty.sh/gh/Stanislav-Povolotsky/projects/tun2socks)
+[![GitHub License][5]](https://github.com/Stanislav-Povolotsky/tun2socks/blob/main/LICENSE)
+[![Docker Pulls][6]](https://hub.docker.com/r/Stanislav-Povolotsky/tun2socks)
+[![Releases][7]](https://github.com/Stanislav-Povolotsky/tun2socks/releases)
 
 ## Features
 
@@ -23,50 +23,51 @@
 ![benchmark](docs/benchmark.png)
 
 For all scenarios of usage, tun2socks performs best.
-See [benchmarks](https://github.com/xjasonlyu/tun2socks/wiki/Benchmarks) for more details.
+See [benchmarks](https://github.com/Stanislav-Povolotsky/tun2socks/wiki/Benchmarks) for more details.
 
 ## Documentation
 
-- [Install from Source](https://github.com/xjasonlyu/tun2socks/wiki/Install-from-Source)
-- [Quickstart Examples](https://github.com/xjasonlyu/tun2socks/wiki/Examples)
-- [Memory Optimization](https://github.com/xjasonlyu/tun2socks/wiki/Memory-Optimization)
+- [Install from Source](https://github.com/Stanislav-Povolotsky/tun2socks/wiki/Install-from-Source)
+- [Quickstart Examples](https://github.com/Stanislav-Povolotsky/tun2socks/wiki/Examples)
+- [Memory Optimization](https://github.com/Stanislav-Povolotsky/tun2socks/wiki/Memory-Optimization)
 
-Full documentation and technical guides can be found at [Wiki](https://github.com/xjasonlyu/tun2socks/wiki).
+Full documentation and technical guides can be found at [Wiki](https://github.com/Stanislav-Povolotsky/tun2socks/wiki).
 
 ## Community
 
-Welcome and feel free to ask any questions at [Discussions](https://github.com/xjasonlyu/tun2socks/discussions).
+Welcome and feel free to ask any questions at [Discussions](https://github.com/Stanislav-Povolotsky/tun2socks/discussions).
 
 ## Credits
 
 - [google/gvisor](https://github.com/google/gvisor) - Application Kernel for Containers
 - [wireguard-go](https://git.zx2c4.com/wireguard-go) - Go Implementation of WireGuard
 - [wintun](https://git.zx2c4.com/wintun/) - Layer 3 TUN Driver for Windows
+- [tun2socks](https://github.com/xjasonlyu/tun2socks) - Original tun2socks version by @xjasonlyu
 
 ## License
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fxjasonlyu%2Ftun2socks.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fxjasonlyu%2Ftun2socks?ref=badge_large)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FStanislav-Povolotsky%2Ftun2socks.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FStanislav-Povolotsky%2Ftun2socks?ref=badge_large)
 
 ## Star History
 
-<a href="https://star-history.com/#xjasonlyu/tun2socks&Date">
+<a href="https://star-history.com/#Stanislav-Povolotsky/tun2socks&Date">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=xjasonlyu/tun2socks&type=Date&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=xjasonlyu/tun2socks&type=Date" />
-    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=xjasonlyu/tun2socks&type=Date" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Stanislav-Povolotsky/tun2socks&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Stanislav-Povolotsky/tun2socks&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Stanislav-Povolotsky/tun2socks&type=Date" />
   </picture>
 </a>
 
-[1]: https://img.shields.io/github/actions/workflow/status/xjasonlyu/tun2socks/docker.yml?logo=github
+[1]: https://img.shields.io/github/actions/workflow/status/Stanislav-Povolotsky/tun2socks/docker.yml?logo=github
 
-[2]: https://img.shields.io/github/go-mod/go-version/xjasonlyu/tun2socks?logo=go
+[2]: https://img.shields.io/github/go-mod/go-version/Stanislav-Povolotsky/tun2socks?logo=go
 
-[3]: https://goreportcard.com/badge/github.com/xjasonlyu/tun2socks
+[3]: https://goreportcard.com/badge/github.com/Stanislav-Povolotsky/tun2socks
 
-[4]: https://qlty.sh/gh/xjasonlyu/projects/tun2socks/maintainability.svg
+[4]: https://qlty.sh/gh/Stanislav-Povolotsky/projects/tun2socks/maintainability.svg
 
-[5]: https://img.shields.io/github/license/xjasonlyu/tun2socks
+[5]: https://img.shields.io/github/license/Stanislav-Povolotsky/tun2socks
 
-[6]: https://img.shields.io/docker/pulls/xjasonlyu/tun2socks?logo=docker
+[6]: https://img.shields.io/docker/pulls/Stanislav-Povolotsky/tun2socks?logo=docker
 
-[7]: https://img.shields.io/github/v/release/xjasonlyu/tun2socks?logo=smartthings
+[7]: https://img.shields.io/github/v/release/Stanislav-Povolotsky/tun2socks?logo=smartthings

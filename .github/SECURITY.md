@@ -14,7 +14,7 @@ disclosure.
 
 **Please do not report security vulnerabilities through public GitHub issues, discussions, or pull requests.**
 
-Instead, please email to xjasonlyu[@]gmail.com.
+Instead, please email to stas.dev[@]povolotsky.info.
 
 Please include as much of the information listed below as you can to help me better understand and resolve the issue:
 

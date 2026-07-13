@@ -7,9 +7,9 @@ import (
 
 	D "github.com/miekg/dns"
 
-	"github.com/xjasonlyu/tun2socks/v2/common/sockopt"
-	"github.com/xjasonlyu/tun2socks/v2/component/fakeip"
-	"github.com/xjasonlyu/tun2socks/v2/log"
+	"github.com/Stanislav-Povolotsky/tun2socks/v2/common/sockopt"
+	"github.com/Stanislav-Povolotsky/tun2socks/v2/component/fakeip"
+	"github.com/Stanislav-Povolotsky/tun2socks/v2/log"
 )
 
 var server = &Server{}

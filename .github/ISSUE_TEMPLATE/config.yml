@@ -2,8 +2,8 @@ blank_issues_enabled: false
 
 contact_links:
   - name: tun2socks GitHub Wiki
-    url: https://github.com/xjasonlyu/tun2socks/wiki
+    url: https://github.com/Stanislav-Povolotsky/tun2socks/wiki
     about: Please see the wiki for common configurations
   - name: tun2socks GitHub Discussions
-    url: https://github.com/xjasonlyu/tun2socks/discussions
+    url: https://github.com/Stanislav-Povolotsky/tun2socks/discussions
     about: Ask questions and get help on GitHub Discussions
