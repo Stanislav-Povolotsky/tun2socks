@@ -78,3 +78,51 @@ jobs:
           files: build/*
           draft: true
           prerelease: ${{ steps.pre.outputs.is_prerelease }}
+
+  ios:
+    name: iOS
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          check-latest: true
+          go-version-file: 'go.mod'
+
+      - name: Set prerelease flag
+        id: pre
+        run: |
+          TAG="$GITHUB_REF_NAME"
+          if [[ "$TAG" =~ -(beta|alpha|rc) ]]; then
+            echo "is_prerelease=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_prerelease=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install gomobile
+        run: |
+          go install golang.org/x/mobile/cmd/gomobile@latest
+          go install golang.org/x/mobile/cmd/gobind@latest
+          gomobile init
+
+      - name: Build iOS XCFramework
+        run: |
+          mkdir -p build
+          gomobile bind -o build/Tun2socks.xcframework -target=ios \
+            -bundleid=info.povolotsky.tun2socks \
+            -ldflags="-s -w" -trimpath \
+            ./engine
+          ditto -c -k --sequesterRsrc --keepParent \
+            build/Tun2socks.xcframework build/tun2socks-ios.xcframework.zip
+
+      - name: Upload Releases
+        uses: softprops/action-gh-release@v3
+        with:
+          files: build/tun2socks-ios.xcframework.zip
+          draft: true
+          prerelease: ${{ steps.pre.outputs.is_prerelease }}
