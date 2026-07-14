@@ -95,11 +95,23 @@ protocols directly.
 
 ### Release pipeline (`.github/workflows/release.yml`)
 
-On tag push: `make -j releases` cross-compiles the full OS/arch matrix and zips each binary,
-then a `gomobile bind` step builds `build/tun2socks-android.aar` from the `engine` package
-(JDK 17 + Android NDK `27.2.12479018`) — this fork's own addition, publishing the engine as a
-prebuilt Android library alongside the CLI binaries, stripped via `-ldflags="-s -w" -trimpath`.
-Everything under `build/*` is uploaded as release assets via `softprops/action-gh-release`.
+On tag push, two jobs run: `release` (`ubuntu-latest`) does `make -j releases` to cross-compile
+the full OS/arch matrix and zip each binary, then a `gomobile bind` step builds
+`build/tun2socks-android.aar` from the `engine` package (JDK 17 + Android NDK
+`27.2.12479018`), stripped via `-ldflags="-s -w" -trimpath`; everything under `build/*` is
+uploaded as release assets via `softprops/action-gh-release`. `ios` (`macos-latest`, Xcode
+preinstalled — Apple targets can only be built on macOS) does the equivalent for iOS:
+`gomobile bind -target=ios` produces an XCFramework (device + simulator slices) at
+`build/Tun2socks.xcframework`, zipped with `ditto` (the Apple-recommended way to archive a
+framework bundle, preserves its internal symlinks) into `tun2socks-ios.xcframework.zip`, and
+uploaded to the same release. Both jobs are this fork's own addition — the `engine` package
+needed no source changes for either mobile target: `runtime.GOOS == "ios"` was already handled
+in `engine/parse.go` (the 4-byte protocol-family header on the fd you get from
+`NEPacketTunnelFlow` via the common private-KVC trick), and every platform-specific file
+elsewhere already resolves correctly for `GOOS=ios` because Go treats `ios` as implied by both
+the `unix` build tag and any `_darwin.go`-suffixed file (verified via `go list -f
+'{{.GoFiles}}'` with `GOOS=ios`, since actually compiling for `ios` requires cgo + Xcode and
+can't be checked on a non-macOS machine).
 
 ### Keeping in sync with upstream
 
