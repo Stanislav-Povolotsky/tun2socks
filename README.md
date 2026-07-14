@@ -1,8 +1,8 @@
 ![tun2socks](docs/logo.png)
 
-[![GitHub Workflow][1]](https://github.com/Stanislav-Povolotsky/tun2socks/actions)
-[![Go Version][2]](https://github.com/Stanislav-Povolotsky/tun2socks/blob/main/go.mod)
-[![Go Report][3]](https://goreportcard.com/badge/github.com/Stanislav-Povolotsky/tun2socks)
+[![Go Build][1]](https://github.com/Stanislav-Povolotsky/tun2socks/actions/workflows/docker.yml)
+[![Go Linter][2]](https://github.com/Stanislav-Povolotsky/tun2socks/actions/workflows/linter.yml)
+[![Go Version][3]](https://github.com/Stanislav-Povolotsky/tun2socks/blob/main/go.mod)
 [![Maintainability][4]](https://qlty.sh/gh/Stanislav-Povolotsky/projects/tun2socks)
 [![GitHub License][5]](https://github.com/Stanislav-Povolotsky/tun2socks/blob/main/LICENSE)
 [![Docker Pulls][6]](https://hub.docker.com/r/Stanislav-Povolotsky/tun2socks)
@@ -58,11 +58,11 @@ Welcome and feel free to ask any questions at [Discussions](https://github.com/S
   </picture>
 </a>
 
-[1]: https://img.shields.io/github/actions/workflow/status/Stanislav-Povolotsky/tun2socks/docker.yml?logo=github
+[1]: https://img.shields.io/github/actions/workflow/status/Stanislav-Povolotsky/tun2socks/docker.yml?branch=main&logo=github
 
-[2]: https://img.shields.io/github/go-mod/go-version/Stanislav-Povolotsky/tun2socks?logo=go
+[2]: https://img.shields.io/github/actions/workflow/status/Stanislav-Povolotsky/tun2socks/linter.yml?branch=main&logo=githubactions&label=golangci-lint
 
-[3]: https://goreportcard.com/badge/github.com/Stanislav-Povolotsky/tun2socks
+[3]: https://img.shields.io/github/go-mod/go-version/Stanislav-Povolotsky/tun2socks?logo=go
 
 [4]: https://qlty.sh/gh/Stanislav-Povolotsky/projects/tun2socks/maintainability.svg
 
