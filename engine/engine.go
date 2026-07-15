@@ -192,9 +192,9 @@ var remoteDNSProtocols = map[string]bool{
 }
 
 // newFakeDNSPool validates the fake DNS configuration and builds its address
-// pool. It has no side effects, so it is safe to call before the netstack is
-// brought up: a configuration error here must not leave a half-started stack
-// behind.
+// pool. It has no side effects, so it is safe to call before the netstack
+// (core.CreateStack) is brought up: a configuration error here must not
+// leave a half-started stack behind.
 func newFakeDNSPool(k *Key, proxyScheme string) (*fakeip.Pool, error) {
 	if !k.FakeDNS {
 		return nil, nil
@@ -218,7 +218,7 @@ func newFakeDNSPool(k *Key, proxyScheme string) (*fakeip.Pool, error) {
 
 // validateDNSHijack checks the DNS hijack config is well-formed. Like
 // newFakeDNSPool, it has no side effects, so a bad config can be rejected
-// before the netstack is brought up.
+// before the netstack (core.CreateStack) is brought up.
 func validateDNSHijack(k *Key) error {
 	if k.DNSAddr == "" {
 		return nil
@@ -263,17 +263,27 @@ func netstack(k *Key) (err error) {
 	}
 	tunnel.T().SetProxy(_defaultProxy)
 
-	// Validate fake DNS config and build its pool up front: an error here
-	// must not leave a half-started stack behind.
+	// Open the device before any further validation. On platforms like
+	// Android, the OS-level VPN interface already exists by this point
+	// (VpnService.Builder.establish() already ran and handed us the fd)
+	// independent of whether parseDevice ever wraps it here. If a later
+	// validation step below fails, the caller's cleanup path -- which
+	// unconditionally calls Stop() -- needs _defaultDevice to already be
+	// set so Close() actually releases that fd/interface; otherwise the
+	// real OS-level VPN interface leaks even though this engine correctly
+	// reports the connection attempt as failed.
+	if _defaultDevice, err = parseDevice(k.Device, uint32(k.MTU)); err != nil {
+		return err
+	}
+
+	// Validate fake DNS and DNS hijack config and build the fake DNS pool.
+	// Both are cheap/side-effect-free, so an error here still only costs a
+	// device Close() (via the caller's Stop()), not an aborted netstack.
 	fakeDNSPool, err := newFakeDNSPool(k, proxyScheme)
 	if err != nil {
 		return err
 	}
 	if err = validateDNSHijack(k); err != nil {
-		return err
-	}
-
-	if _defaultDevice, err = parseDevice(k.Device, uint32(k.MTU)); err != nil {
 		return err
 	}
 
