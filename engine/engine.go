@@ -263,22 +263,15 @@ func netstack(k *Key) (err error) {
 	}
 	tunnel.T().SetProxy(_defaultProxy)
 
-	// Open the device before any further validation. On platforms like
-	// Android, the OS-level VPN interface already exists by this point
-	// (VpnService.Builder.establish() already ran and handed us the fd)
-	// independent of whether parseDevice ever wraps it here. If a later
-	// validation step below fails, the caller's cleanup path -- which
-	// unconditionally calls Stop() -- needs _defaultDevice to already be
-	// set so Close() actually releases that fd/interface; otherwise the
-	// real OS-level VPN interface leaks even though this engine correctly
-	// reports the connection attempt as failed.
+	// Open the device before validating fake DNS/hijack config: on Android
+	// the OS-level VPN interface (and its fd) already exists by this point,
+	// so _defaultDevice must be set before any later step can fail --
+	// otherwise the caller's Stop() has nothing to Close() and that
+	// interface leaks even though Start() reports an error.
 	if _defaultDevice, err = parseDevice(k.Device, uint32(k.MTU)); err != nil {
 		return err
 	}
 
-	// Validate fake DNS and DNS hijack config and build the fake DNS pool.
-	// Both are cheap/side-effect-free, so an error here still only costs a
-	// device Close() (via the caller's Stop()), not an aborted netstack.
 	fakeDNSPool, err := newFakeDNSPool(k, proxyScheme)
 	if err != nil {
 		return err
